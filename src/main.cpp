@@ -21,15 +21,5 @@ int main(int argc, char**argv) {
         custosIlhas[i] = custoDiarioIlha;
         pontuacoesIlhas[i] = pontuacaoIlha;
     }
-
-    // TODO: remover testes de entrada.
-    std::cout << "Custos: " << std::endl;
-    for (auto c : custosIlhas) {
-        std::cout << c << std::endl;
-    }
-    std::cout << "Pontuacoes: " << std::endl;
-    for (auto c : pontuacoesIlhas) {
-        std::cout << c << std::endl;
-    }
     return 0;
 }

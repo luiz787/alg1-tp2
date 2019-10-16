@@ -8,7 +8,6 @@ class Ilha {
 private:
     uint32_t custoDiario;
     uint32_t pontuacaoDiaria;
-    double custoBeneficio;
 public:
     Ilha(uint32_t custoDiario, uint32_t pontuacaoDiaria);
     ~Ilha();

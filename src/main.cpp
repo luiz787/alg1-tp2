@@ -5,18 +5,21 @@
 #include "Ilha.hpp"
 
 void resolverViaAlgoritmoGuloso(uint32_t custoMaximo, std::vector<Ilha> &ilhas);
+void resolverViaProgramacaoDinamica(uint32_t custoMaximo, std::vector<Ilha> &ilhas);
 std::vector<Ilha> lerEntrada(std::ifstream &inputFile, uint32_t quantidadeIlhas);
 
 /*
  * Função utilizada para ordenação: ordem decrescente pelo custo benefício.
  */
-bool compararIlhas(Ilha a, Ilha b) {
+bool compararIlhasPorCustoBeneficio(Ilha a, Ilha b) {
     return a.getCustoBeneficio() > b.getCustoBeneficio();
 }
 
 int main(int argc, char**argv) {
     char* inputFileName = argv[1];
+    // auto temp = "../entradas/exemplo1.txt";
     std::ifstream inputFile (inputFileName);
+    // std::ifstream inputFile (temp);
     if (!inputFile.is_open()) {
         std::cout << "Falha ao abrir o arquivo de entrada." << std::endl;
         return 1;
@@ -27,6 +30,7 @@ int main(int argc, char**argv) {
     std::vector<Ilha> ilhas = lerEntrada(inputFile, quantidadeIlhas);
 
     resolverViaAlgoritmoGuloso(custoMaximo, ilhas);
+    resolverViaProgramacaoDinamica(custoMaximo, ilhas);
 
     return 0;
 }
@@ -45,20 +49,61 @@ std::vector<Ilha> lerEntrada(std::ifstream &inputFile, uint32_t quantidadeIlhas)
 
 void resolverViaAlgoritmoGuloso(uint32_t custoMaximo, std::vector<Ilha> &ilhas) {
 
+    // Copia ilhas para um vetor auxiliar, para não gerar efeitos colaterais fora da função.
+    auto copiaIlhas = ilhas;
     /*
      * Ordena as ilhas por custo benefício. Função definida da seguinte maneira:
      * f(custo, pontuacao): pontuacao / custo
      */
-    std::sort(ilhas.begin(), ilhas.end(), compararIlhas); // TODO: implementar MergeSort
+    std::sort(copiaIlhas.begin(), copiaIlhas.end(), compararIlhasPorCustoBeneficio); // TODO: implementar MergeSort
 
     uint32_t pontuacaoFinal = 0;
     uint32_t quantidadeDiasViagem = 0;
     uint32_t dinheiroRemanescente = custoMaximo;
-    for (const auto &il : ilhas) {
-        auto quantidadeDiasPossiveisIlha = dinheiroRemanescente / il.getCustoDiario();
-        pontuacaoFinal += quantidadeDiasPossiveisIlha * il.getPontuacaoDiaria();
+    for (const auto &ilha : copiaIlhas) {
+        auto quantidadeDiasPossiveisIlha = dinheiroRemanescente / ilha.getCustoDiario();
+        pontuacaoFinal += quantidadeDiasPossiveisIlha * ilha.getPontuacaoDiaria();
         quantidadeDiasViagem += quantidadeDiasPossiveisIlha;
-        dinheiroRemanescente -= quantidadeDiasPossiveisIlha * il.getCustoDiario();
+        dinheiroRemanescente -= quantidadeDiasPossiveisIlha * ilha.getCustoDiario();
     }
     std::cout << pontuacaoFinal << " " << quantidadeDiasViagem << std::endl;
+}
+
+void resolverViaProgramacaoDinamica(uint32_t custoMaximo, std::vector<Ilha> &ilhas) {
+    auto quantidadeIlhas = ilhas.size();
+    uint32_t tabelaLookup[quantidadeIlhas + 1][custoMaximo + 1];
+
+    for (uint32_t i = 1; i <= quantidadeIlhas; i++) {
+
+        /*
+         * Aqui o indice i é normalizado para i - 1, para que se consiga acessar a ilha indexada por 0, visto que a
+         * primeira iteração do algortimo de programação dinâmica considera o subconjunto vazio como 0.
+         */
+        auto ilhaAtual = ilhas[i - 1];
+        for (uint32_t custo = 0; custo <= custoMaximo; custo++) {
+            if (ilhaAtual.getCustoDiario() > custo) {
+                tabelaLookup[i][custo] = tabelaLookup[i - 1][custo];
+            } else {
+                auto custoSemUtilizarIlhaAtual = tabelaLookup[i - 1][custo];
+                auto custoUtilizandoIlhaAtual = ilhaAtual.getPontuacaoDiaria() + tabelaLookup[i - 1][custo - ilhaAtual.getCustoDiario()];
+                tabelaLookup[i][custo] = std::max(custoSemUtilizarIlhaAtual, custoUtilizandoIlhaAtual);
+            }
+        }
+    }
+    auto pontuacaoMaxima = tabelaLookup[quantidadeIlhas][custoMaximo];
+
+    auto custo = custoMaximo;
+    auto dias = 0;
+
+    auto pontuacao = pontuacaoMaxima;
+    for (uint32_t i = quantidadeIlhas; i >= 0 && pontuacao > 0; i--) {
+        if (tabelaLookup[i][custo] == tabelaLookup[i - 1][custo]) {
+            continue;
+        } else {
+            dias++;
+            custo = custo - ilhas[i - 1].getCustoDiario();
+            pontuacao = pontuacao - ilhas[i - 1].getPontuacaoDiaria();
+        }
+    }
+    std::cout << pontuacaoMaxima << " " << dias << std::endl;
 }

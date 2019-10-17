@@ -4,30 +4,24 @@
 #include <fstream>
 #include "Ilha.hpp"
 
+std::ifstream abrirArquivoEntrada(char** argv);
 void resolverViaAlgoritmoGuloso(uint32_t custoMaximo, std::vector<Ilha> &ilhas);
 void resolverViaProgramacaoDinamica(uint32_t custoMaximo, std::vector<Ilha> &ilhas);
-std::vector<Ilha> lerEntrada(std::ifstream &inputFile, uint32_t quantidadeIlhas);
+std::vector<Ilha> lerEntrada(std::ifstream &arquivoEntrada, uint32_t quantidadeIlhas);
 
 /*
  * Função utilizada para ordenação: ordem decrescente pelo custo benefício.
  */
-bool compararIlhasPorCustoBeneficio(Ilha a, Ilha b) {
+bool compararIlhasPorCustoBeneficio(const Ilha& a, const Ilha& b) {
     return a.getCustoBeneficio() > b.getCustoBeneficio();
 }
 
 int main(int argc, char**argv) {
-    char* inputFileName = argv[1];
-    // auto temp = "../entradas/exemplo1.txt";
-    std::ifstream inputFile (inputFileName);
-    // std::ifstream inputFile (temp);
-    if (!inputFile.is_open()) {
-        std::cout << "Falha ao abrir o arquivo de entrada." << std::endl;
-        return 1;
-    }
+    auto arquivoEntrada = abrirArquivoEntrada(argv);
     uint32_t custoMaximo;
     uint32_t quantidadeIlhas;
-    inputFile >> custoMaximo >> quantidadeIlhas;
-    std::vector<Ilha> ilhas = lerEntrada(inputFile, quantidadeIlhas);
+    arquivoEntrada >> custoMaximo >> quantidadeIlhas;
+    std::vector<Ilha> ilhas = lerEntrada(arquivoEntrada, quantidadeIlhas);
 
     resolverViaAlgoritmoGuloso(custoMaximo, ilhas);
     resolverViaProgramacaoDinamica(custoMaximo, ilhas);
@@ -35,12 +29,21 @@ int main(int argc, char**argv) {
     return 0;
 }
 
-std::vector<Ilha> lerEntrada(std::ifstream &inputFile, uint32_t quantidadeIlhas) {
+std::ifstream abrirArquivoEntrada(char** argv) {
+    char* inputFileName = argv[1];
+    std::ifstream inputFile (inputFileName);
+    if (!inputFile.is_open()) {
+        throw std::invalid_argument("Falha ao abrir o arquivo de entrada.");
+    }
+    return inputFile;
+}
+
+std::vector<Ilha> lerEntrada(std::ifstream &arquivoEntrada, uint32_t quantidadeIlhas) {
     std::vector<Ilha> ilhas;
     for (uint32_t i = 0; i < quantidadeIlhas; i++) {
         uint32_t custoDiarioIlha;
         uint32_t pontuacaoIlha;
-        inputFile >> custoDiarioIlha >> pontuacaoIlha;
+        arquivoEntrada >> custoDiarioIlha >> pontuacaoIlha;
         auto ilha = Ilha(custoDiarioIlha, pontuacaoIlha);
         ilhas.push_back(ilha);
     }
@@ -49,8 +52,9 @@ std::vector<Ilha> lerEntrada(std::ifstream &inputFile, uint32_t quantidadeIlhas)
 
 void resolverViaAlgoritmoGuloso(uint32_t custoMaximo, std::vector<Ilha> &ilhas) {
 
-    // Copia ilhas para um vetor auxiliar, para não gerar efeitos colaterais fora da função.
+    // Copia ilhas para um vetor auxiliar, para não gerar efeitos colaterais fora da função ao ordenar.
     auto copiaIlhas = ilhas;
+
     /*
      * Ordena as ilhas por custo benefício. Função definida da seguinte maneira:
      * f(custo, pontuacao): pontuacao / custo

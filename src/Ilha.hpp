@@ -9,6 +9,7 @@ private:
     uint32_t custoDiario;
     uint32_t pontuacaoDiaria;
 public:
+    Ilha() = default;
     Ilha(uint32_t custoDiario, uint32_t pontuacaoDiaria);
     ~Ilha();
 

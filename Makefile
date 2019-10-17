@@ -1,7 +1,7 @@
 SRC_DIR = src
 OBJ_DIR = obj
 
-EXE = tp1
+EXE = tp2
 
 CC = g++
 

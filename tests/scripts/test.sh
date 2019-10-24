@@ -20,7 +20,7 @@ echo -e "\nIniciando testes..."
 for i in {1..4}
 do
 	echo "Testando entrada test_cases/in/$i.in"
-	./tp2 tests/test_cases/in/$i.in > tests/output/$i.out
+	./bin/tp2 tests/test_cases/in/$i.in > tests/output/$i.out
 	(cmp --silent tests/test_cases/out/$i.out tests/output/$i.out && 
 		echo "Actual output for test case $i is identical to the expected output." || 
 		echo "Actual output for test case $i differs to the expected output.") >> tests/output/compare.out

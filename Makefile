@@ -1,5 +1,6 @@
 SRC_DIR = src
 OBJ_DIR = obj
+BIN_DIR = bin
 
 EXE = tp2
 
@@ -16,11 +17,13 @@ LDLIBS += -lm
 all: $(EXE)
 
 $(EXE): $(OBJ)
-	$(CC) $^ $(LDLIBS) -o $@
+	@mkdir -p $(BIN_DIR)
+	$(CC) $^ $(LDLIBS) -o $(BIN_DIR)/$@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(@D)
 	$(CC) $(CPPFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJ)
-	$(RM) $(EXE)
+	$(RM) -r $(OBJ_DIR)
+	$(RM) -r $(BIN_DIR)

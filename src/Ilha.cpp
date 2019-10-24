@@ -1,7 +1,13 @@
 #include "Ilha.hpp"
 
-Ilha::Ilha(uint32_t custoDiario, uint32_t pontuacaoDiaria) : custoDiario(custoDiario), pontuacaoDiaria(pontuacaoDiaria) {}
 Ilha::~Ilha() = default;
+
+Ilha::Ilha(Ilha *pIlha) {
+    this->custoDiario = pIlha->custoDiario;
+    this->pontuacaoDiaria = pIlha->pontuacaoDiaria;
+}
+
+Ilha::Ilha(uint32_t custoDiario, uint32_t pontuacaoDiaria) : custoDiario(custoDiario), pontuacaoDiaria(pontuacaoDiaria) {}
 
 uint32_t Ilha::getCustoDiario() const {
     return custoDiario;

@@ -2,12 +2,14 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <array>
 #include "Ilha.hpp"
+#include "MergeSortIlhas.hpp"
 
 std::ifstream abrirArquivoEntrada(char** argv);
-void resolverViaAlgoritmoGuloso(uint32_t custoMaximo, std::vector<Ilha> &ilhas);
+void resolverViaAlgoritmoGuloso(uint32_t custoMaximo, Ilha* islands, uint32_t quantidadeIlhas);
 void resolverViaProgramacaoDinamica(uint32_t custoMaximo, std::vector<Ilha> &ilhas);
-std::vector<Ilha> lerEntrada(std::ifstream &arquivoEntrada, uint32_t quantidadeIlhas);
+Ilha* lerEntrada(std::ifstream &arquivoEntrada, uint32_t quantidadeIlhas);
 
 /*
  * Função utilizada para ordenação: ordem decrescente pelo custo benefício.
@@ -21,10 +23,11 @@ int main(int argc, char**argv) {
     uint32_t custoMaximo;
     uint32_t quantidadeIlhas;
     arquivoEntrada >> custoMaximo >> quantidadeIlhas;
-    std::vector<Ilha> ilhas = lerEntrada(arquivoEntrada, quantidadeIlhas);
+    auto ilhas = lerEntrada(arquivoEntrada, quantidadeIlhas);
 
-    resolverViaAlgoritmoGuloso(custoMaximo, ilhas);
-    resolverViaProgramacaoDinamica(custoMaximo, ilhas);
+    resolverViaAlgoritmoGuloso(custoMaximo, ilhas, quantidadeIlhas);
+    auto vectorIlhas = std::vector<Ilha>(ilhas, ilhas + quantidadeIlhas);
+    resolverViaProgramacaoDinamica(custoMaximo, vectorIlhas);
 
     return 0;
 }
@@ -38,33 +41,32 @@ std::ifstream abrirArquivoEntrada(char** argv) {
     return inputFile;
 }
 
-std::vector<Ilha> lerEntrada(std::ifstream &arquivoEntrada, uint32_t quantidadeIlhas) {
+Ilha* lerEntrada(std::ifstream &arquivoEntrada, uint32_t quantidadeIlhas) {
     std::vector<Ilha> ilhas;
+    Ilha* islands = new Ilha[quantidadeIlhas];
     for (uint32_t i = 0; i < quantidadeIlhas; i++) {
         uint32_t custoDiarioIlha;
         uint32_t pontuacaoIlha;
         arquivoEntrada >> custoDiarioIlha >> pontuacaoIlha;
-        auto ilha = Ilha(custoDiarioIlha, pontuacaoIlha);
+        auto ilha = new Ilha(custoDiarioIlha, pontuacaoIlha);
+        islands[i] = Ilha(custoDiarioIlha, pontuacaoIlha);
         ilhas.push_back(ilha);
     }
-    return ilhas;
+    return islands;
 }
 
-void resolverViaAlgoritmoGuloso(uint32_t custoMaximo, std::vector<Ilha> &ilhas) {
-
-    // Copia ilhas para um vetor auxiliar, para não gerar efeitos colaterais fora da função ao ordenar.
-    auto copiaIlhas = ilhas;
-
+void resolverViaAlgoritmoGuloso(uint32_t custoMaximo, Ilha* islands, uint32_t quantidadeIlhas) {
     /*
      * Ordena as ilhas por custo benefício. Função definida da seguinte maneira:
      * f(custo, pontuacao): pontuacao / custo
      */
-    std::sort(copiaIlhas.begin(), copiaIlhas.end(), compararIlhasPorCustoBeneficio); // TODO: implementar MergeSort
-
+    MergeSortIlhas::sort(islands, quantidadeIlhas);
     uint32_t pontuacaoFinal = 0;
     uint32_t quantidadeDiasViagem = 0;
     uint32_t dinheiroRemanescente = custoMaximo;
-    for (const auto &ilha : copiaIlhas) {
+
+    for (int32_t i = quantidadeIlhas - 1; i >= 0; --i) {
+        auto ilha = islands[i];
         auto quantidadeDiasPossiveisIlha = dinheiroRemanescente / ilha.getCustoDiario();
         pontuacaoFinal += quantidadeDiasPossiveisIlha * ilha.getPontuacaoDiaria();
         quantidadeDiasViagem += quantidadeDiasPossiveisIlha;

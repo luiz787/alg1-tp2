@@ -19,7 +19,7 @@ int main(int argc, char**argv) {
     solveWithGreedyAlgorithm(maximumCost, islands, amountOfIslands);
     auto islandsVector = std::vector<Island>(islands, islands + amountOfIslands);
     solveWithDynamicProgramming(maximumCost, islandsVector);
-
+    delete islands;
     return 0;
 }
 
@@ -33,15 +33,12 @@ std::ifstream openInputFile(char** argv) {
 }
 
 Island* readInput(std::ifstream &inputFile, uint32_t amountOfIslands) {
-    std::vector<Island> ilhas;
     auto islands = new Island[amountOfIslands];
     for (uint32_t i = 0; i < amountOfIslands; i++) {
         uint32_t islandDailyCost;
         uint32_t islandPunctuation;
         inputFile >> islandDailyCost >> islandPunctuation;
-        auto ilha = new Island(islandDailyCost, islandPunctuation);
         islands[i] = Island(islandDailyCost, islandPunctuation);
-        ilhas.push_back(ilha);
     }
     return islands;
 }

@@ -3,7 +3,7 @@
 #include "Island.hpp"
 #include "MergeSortIslands.hpp"
 
-std::ifstream openInputFile(char** argv);
+std::ifstream openInputFile(int argc, char** argv);
 Island* readInput(std::ifstream &inputFile, uint32_t amountOfIslands);
 
 void solveWithGreedyAlgorithm(uint32_t maximumCost, Island* islands, uint32_t amountOfIslands);
@@ -11,7 +11,7 @@ void solveWithDynamicProgramming(uint32_t maximumCost, Island* islands, uint32_t
 
 
 int main(int argc, char**argv) {
-    auto inputFile = openInputFile(argv);
+    auto inputFile = openInputFile(argc, argv);
     uint32_t maximumCost = 0;
     uint32_t amountOfIslands = 0;
     inputFile >> maximumCost >> amountOfIslands;
@@ -24,7 +24,10 @@ int main(int argc, char**argv) {
     return 0;
 }
 
-std::ifstream openInputFile(char** argv) {
+std::ifstream openInputFile(int argc, char** argv) {
+    if (argc < 2) {
+        throw std::invalid_argument("Nome do arquivo de entrada deve ser passado como argumento.");
+    }
     char* inputFileName = argv[1];
     std::ifstream inputFile (inputFileName);
     if (!inputFile.is_open()) {

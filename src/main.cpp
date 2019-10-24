@@ -46,8 +46,10 @@ Island* readInput(std::ifstream &inputFile, uint32_t amountOfIslands) {
 
 void solveWithGreedyAlgorithm(uint32_t maximumCost, Island* islands, uint32_t amountOfIslands) {
     /*
-     * Ordena as ilhas por custo benefício. Função definida da seguinte maneira:
-     * f(custo, pontuacao): pontuacao / custo
+     * Ordena as ilhas por custo por ponto. Função definida da seguinte maneira:
+     * f(custo, pontuacao): custo / pontucacao.
+     * Com isso, as ilhas que tem o menor custo por ponto são as mais vantajosas, com maior
+     * "custo benefício".
      */
     MergeSortIslands::sort(islands, amountOfIslands);
     uint32_t finalPunctuation = 0;

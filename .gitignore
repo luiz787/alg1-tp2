@@ -28,9 +28,12 @@
 
 # Executables
 *.exe
-*.out
 *.app
 
 # CLion files
 cmake-build-debug
 .idea
+
+# Dynamic test outputs
+tests/validation
+tests/output

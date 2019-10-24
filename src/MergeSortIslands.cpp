@@ -1,11 +1,11 @@
 #include <vector>
-#include "MergeSortIlhas.hpp"
+#include "MergeSortIslands.hpp"
 
-void MergeSortIlhas::sort(Ilha islands[], uint32_t size) {
+void MergeSortIslands::sort(Island islands[], uint32_t size) {
     mergeSort(islands, 0, size - 1);
 }
 
-void MergeSortIlhas::mergeSort(Ilha islands[], uint32_t left, uint32_t right) {
+void MergeSortIslands::mergeSort(Island islands[], uint32_t left, uint32_t right) {
     if (left < right) {
         uint32_t middle = left + (right - left) / 2;
         mergeSort(islands, left, middle);
@@ -14,12 +14,12 @@ void MergeSortIlhas::mergeSort(Ilha islands[], uint32_t left, uint32_t right) {
     }
 }
 
-void MergeSortIlhas::merge(Ilha islands[], uint32_t left, uint32_t middle, uint32_t right) {
+void MergeSortIslands::merge(Island islands[], uint32_t left, uint32_t middle, uint32_t right) {
     uint32_t leftSize = middle - left + 1;
     uint32_t rightSize = right - middle;
 
-    Ilha tempLeft[leftSize];
-    Ilha tempRight[rightSize];
+    Island tempLeft[leftSize];
+    Island tempRight[rightSize];
     for (uint32_t i = 0; i < middle - left + 1; i++) {
         tempLeft[i] = islands[left + i];
     }
@@ -30,7 +30,7 @@ void MergeSortIlhas::merge(Ilha islands[], uint32_t left, uint32_t middle, uint3
     uint32_t j = 0;
     uint32_t addedElements = left;
     while (i < leftSize && j < rightSize) {
-        if (tempLeft[i].getCustoBeneficio() < tempRight[j].getCustoBeneficio()) {
+        if (tempLeft[i].getCostBenefit() < tempRight[j].getCostBenefit()) {
             islands[addedElements++] = tempLeft[i++];
         } else {
             islands[addedElements++] = tempRight[j++];

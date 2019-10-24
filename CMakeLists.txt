@@ -3,4 +3,4 @@ project(alg1_tp2)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(alg1_tp2 src/main.cpp src/Ilha.cpp src/Ilha.hpp src/MergeSortIlhas.cpp src/MergeSortIlhas.hpp)
+add_executable(alg1_tp2 src/main.cpp src/Island.cpp src/Island.hpp src/MergeSortIslands.cpp src/MergeSortIslands.hpp)

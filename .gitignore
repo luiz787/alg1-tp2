@@ -34,6 +34,10 @@
 cmake-build-debug
 .idea
 
+# Binary folder
+bin
+obj
+
 # Dynamic test outputs
 tests/validation
 tests/output

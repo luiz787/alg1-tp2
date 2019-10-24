@@ -5,9 +5,11 @@
 #include "MergeSortIslands.hpp"
 
 std::ifstream openInputFile(char** argv);
+Island* readInput(std::ifstream &inputFile, uint32_t amountOfIslands);
+
 void solveWithGreedyAlgorithm(uint32_t maximumCost, Island* islands, uint32_t amountOfIslands);
 void solveWithDynamicProgramming(uint32_t maximumCost, std::vector<Island> &islands);
-Island* readInput(std::ifstream &inputFile, uint32_t amountOfIslands);
+
 
 int main(int argc, char**argv) {
     auto inputFile = openInputFile(argv);
@@ -54,7 +56,7 @@ void solveWithGreedyAlgorithm(uint32_t maximumCost, Island* islands, uint32_t am
     uint32_t tripDurationInDays = 0;
     uint32_t remainderMoney = maximumCost;
 
-    for (int32_t i = amountOfIslands - 1; i >= 0; --i) {
+    for (uint32_t i = 0; i < amountOfIslands; ++i) {
         auto island = islands[i];
         auto possibleDaysInIsland = remainderMoney / island.getDailyCost();
         finalPunctuation += possibleDaysInIsland * island.getDailyPunctuation();

@@ -16,7 +16,7 @@ public:
 
     uint32_t getDailyCost() const;
     uint32_t getDailyPunctuation() const;
-    double getCostBenefit() const;
+    double getCostPerPoint() const;
 };
 
 

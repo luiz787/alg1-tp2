@@ -18,6 +18,6 @@ uint32_t Island::getDailyPunctuation() const {
     return dailyPunctuation;
 }
 
-double Island::getCostBenefit() const {
-    return dailyPunctuation / (double) dailyCost;
+double Island::getCostPerPoint() const {
+    return dailyCost / (double) dailyPunctuation;
 }

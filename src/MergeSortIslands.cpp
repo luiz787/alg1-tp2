@@ -30,7 +30,7 @@ void MergeSortIslands::merge(Island islands[], uint32_t left, uint32_t middle, u
     uint32_t j = 0;
     uint32_t addedElements = left;
     while (i < leftSize && j < rightSize) {
-        if (tempLeft[i].getCostBenefit() < tempRight[j].getCostBenefit()) {
+        if (tempLeft[i].getCostPerPoint() < tempRight[j].getCostPerPoint()) {
             islands[addedElements++] = tempLeft[i++];
         } else {
             islands[addedElements++] = tempRight[j++];

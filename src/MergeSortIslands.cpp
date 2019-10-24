@@ -1,4 +1,3 @@
-#include <vector>
 #include "MergeSortIslands.hpp"
 
 void MergeSortIslands::sort(Island islands[], uint32_t size) {

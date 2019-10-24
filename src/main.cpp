@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include <fstream>
 #include "Island.hpp"
 #include "MergeSortIslands.hpp"
@@ -8,7 +7,7 @@ std::ifstream openInputFile(char** argv);
 Island* readInput(std::ifstream &inputFile, uint32_t amountOfIslands);
 
 void solveWithGreedyAlgorithm(uint32_t maximumCost, Island* islands, uint32_t amountOfIslands);
-void solveWithDynamicProgramming(uint32_t maximumCost, std::vector<Island> &islands);
+void solveWithDynamicProgramming(uint32_t maximumCost, Island* islands, uint32_t amountOfIslands);
 
 
 int main(int argc, char**argv) {
@@ -19,8 +18,7 @@ int main(int argc, char**argv) {
     auto islands = readInput(inputFile, amountOfIslands);
 
     solveWithGreedyAlgorithm(maximumCost, islands, amountOfIslands);
-    auto islandsVector = std::vector<Island>(islands, islands + amountOfIslands);
-    solveWithDynamicProgramming(maximumCost, islandsVector);
+    solveWithDynamicProgramming(maximumCost, islands, amountOfIslands);
 
     delete[] islands;
     return 0;
@@ -66,8 +64,7 @@ void solveWithGreedyAlgorithm(uint32_t maximumCost, Island* islands, uint32_t am
     std::cout << finalPunctuation << " " << tripDurationInDays << std::endl;
 }
 
-void solveWithDynamicProgramming(uint32_t maximumCost, std::vector<Island> &islands) {
-    auto amountOfIslands = islands.size();
+void solveWithDynamicProgramming(uint32_t maximumCost, Island* islands, uint32_t amountOfIslands) {
     uint32_t lookupTable[amountOfIslands + 1][maximumCost + 1];
 
     // Pré-inicializa valores da tabela de lookup para 0.

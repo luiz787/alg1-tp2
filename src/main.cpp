@@ -11,15 +11,16 @@ Island* readInput(std::ifstream &inputFile, uint32_t amountOfIslands);
 
 int main(int argc, char**argv) {
     auto inputFile = openInputFile(argv);
-    uint32_t maximumCost;
-    uint32_t amountOfIslands;
+    uint32_t maximumCost = 0;
+    uint32_t amountOfIslands = 0;
     inputFile >> maximumCost >> amountOfIslands;
     auto islands = readInput(inputFile, amountOfIslands);
 
     solveWithGreedyAlgorithm(maximumCost, islands, amountOfIslands);
     auto islandsVector = std::vector<Island>(islands, islands + amountOfIslands);
     solveWithDynamicProgramming(maximumCost, islandsVector);
-    delete islands;
+
+    delete[] islands;
     return 0;
 }
 
@@ -66,6 +67,13 @@ void solveWithGreedyAlgorithm(uint32_t maximumCost, Island* islands, uint32_t am
 void solveWithDynamicProgramming(uint32_t maximumCost, std::vector<Island> &islands) {
     auto amountOfIslands = islands.size();
     uint32_t lookupTable[amountOfIslands + 1][maximumCost + 1];
+
+    // Pré-inicializa valores da tabela de lookup para 0.
+    for (uint32_t i = 0; i <= amountOfIslands; i++) {
+        for (uint32_t j = 0; j <= maximumCost; j++) {
+            lookupTable[i][j] = 0;
+        }
+    }
 
     for (uint32_t i = 1; i <= amountOfIslands; i++) {
 

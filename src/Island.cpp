@@ -1,4 +1,5 @@
 #include "Island.hpp"
+#include <iostream>
 
 Island::~Island() = default;
 

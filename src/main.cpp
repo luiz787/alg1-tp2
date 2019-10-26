@@ -22,13 +22,13 @@ int main(int argc, char**argv) {
     solveWithGreedyAlgorithm(maximumCost, islands, amountOfIslands);
     auto greedyEnd = std::chrono::high_resolution_clock::now(); // Para o relógio.
 
-    auto elapsedTimeGreedy = std::chrono::duration_cast<std::chrono::duration<double>>(greedyEnd - greedyStart); // Calcula o tempo gasto.
-    std::cout << "Tempo de execucao guloso: " << elapsedTimeGreedy.count() << std::endl;
 
     auto dynamicStart = std::chrono::high_resolution_clock::now(); // Inicia o relógio.
     solveWithDynamicProgramming(maximumCost, islands, amountOfIslands);
     auto dynamicEnd = std::chrono::high_resolution_clock::now(); // Para o relógio.
 
+    auto elapsedTimeGreedy = std::chrono::duration_cast<std::chrono::duration<double>>(greedyEnd - greedyStart); // Calcula o tempo gasto.
+    std::cout << "Tempo de execucao guloso: " << elapsedTimeGreedy.count() << std::endl;
     auto elapsedTimeDynamic = std::chrono::duration_cast<std::chrono::duration<double>>(dynamicEnd - dynamicStart); // Calcula o tempo gasto.
     std::cout << "Tempo de execucao programacao dinamica: " << elapsedTimeDynamic.count() << std::endl;
 

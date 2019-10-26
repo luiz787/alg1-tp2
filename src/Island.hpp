@@ -1,7 +1,6 @@
 #ifndef ALG1_TP2_ILHA_HPP
 #define ALG1_TP2_ILHA_HPP
 
-
 #include <cstdint>
 
 class Island {

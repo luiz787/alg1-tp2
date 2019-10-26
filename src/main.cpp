@@ -1,6 +1,8 @@
-#include <iostream>
-#include <fstream>
 #include <chrono>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+
 #include "Island.hpp"
 #include "MergeSortIslands.hpp"
 
@@ -28,9 +30,12 @@ int main(int argc, char**argv) {
     auto dynamicEnd = std::chrono::high_resolution_clock::now(); // Para o relógio.
 
     auto elapsedTimeGreedy = std::chrono::duration_cast<std::chrono::duration<double>>(greedyEnd - greedyStart); // Calcula o tempo gasto.
-    std::cout << "Tempo de execucao guloso: " << elapsedTimeGreedy.count() << std::endl;
     auto elapsedTimeDynamic = std::chrono::duration_cast<std::chrono::duration<double>>(dynamicEnd - dynamicStart); // Calcula o tempo gasto.
-    std::cout << "Tempo de execucao programacao dinamica: " << elapsedTimeDynamic.count() << std::endl;
+    
+    std::cout << std::fixed;
+
+    std::cout << "Tempo de execucao guloso: " << std::setprecision(10) << elapsedTimeGreedy.count() << std::endl;
+    std::cout << "Tempo de execucao programacao dinamica: " << std::setprecision(10) << elapsedTimeDynamic.count() << std::endl;
 
     delete[] islands;
     return 0;

@@ -7,7 +7,7 @@ rm output/*
 echo "Criando arquivo de validação da saída..."
 mkdir -p validation
 rm validation/*
-for i in {1..4}
+for i in {1..10}
 do
 	echo "Actual output for test case $i is identical to the expected output." >> validation/expected.out
 done
@@ -17,7 +17,7 @@ make clean
 echo -e "Iniciando compilação...\n"
 make 
 echo -e "\nIniciando testes..."
-for i in {1..4}
+for i in {1..10}
 do
 	echo "Testando entrada test_cases/in/$i.in"
 	./bin/tp2 tests/test_cases/in/$i.in > tests/output/$i.out

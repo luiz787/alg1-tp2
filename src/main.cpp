@@ -15,7 +15,7 @@ int main(int argc, char**argv) {
     uint32_t maximumCost = 0;
     uint32_t amountOfIslands = 0;
     inputFile >> maximumCost >> amountOfIslands;
-    auto islands = readInput(inputFile, amountOfIslands);
+    const auto islands = readInput(inputFile, amountOfIslands);
 
     solveWithGreedyAlgorithm(maximumCost, islands, amountOfIslands);
     solveWithDynamicProgramming(maximumCost, islands, amountOfIslands);
@@ -47,7 +47,7 @@ Island* readInput(std::ifstream &inputFile, uint32_t amountOfIslands) {
     return islands;
 }
 
-void solveWithGreedyAlgorithm(uint32_t maximumCost, Island* islands, uint32_t amountOfIslands) {
+void solveWithGreedyAlgorithm(const uint32_t maximumCost, Island* islands, const uint32_t amountOfIslands) {
     /*
      * Ordena as ilhas por custo por ponto. Função definida da seguinte maneira:
      * f(custo, pontuacao): custo / pontuacao.
@@ -69,7 +69,7 @@ void solveWithGreedyAlgorithm(uint32_t maximumCost, Island* islands, uint32_t am
     std::cout << finalPunctuation << " " << tripDurationInDays << std::endl;
 }
 
-void solveWithDynamicProgramming(uint32_t maximumCost, Island* islands, uint32_t amountOfIslands) {
+void solveWithDynamicProgramming(const uint32_t maximumCost, Island* islands, const uint32_t amountOfIslands) {
     uint32_t lookupTable[amountOfIslands + 1][maximumCost + 1];
 
     // Pré-inicializa valores da tabela de lookup para 0.

@@ -9,7 +9,6 @@ private:
     uint32_t dailyPunctuation;
 public:
     Island() = default;
-    Island(Island *pOther);
     Island(uint32_t dailyCost, uint32_t dailyPunctuation);
     ~Island();
 

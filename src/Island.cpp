@@ -2,12 +2,7 @@
 
 Island::~Island() = default;
 
-Island::Island(Island *pOther) {
-    this->dailyCost = pOther->dailyCost;
-    this->dailyPunctuation = pOther->dailyPunctuation;
-}
-
-Island::Island(uint32_t dailyCost, uint32_t dailyPunctuation) : dailyCost(dailyCost), dailyPunctuation(dailyPunctuation) {}
+Island::Island(const uint32_t dailyCost, const uint32_t dailyPunctuation) : dailyCost(dailyCost), dailyPunctuation(dailyPunctuation) {}
 
 uint32_t Island::getDailyCost() const {
     return dailyCost;

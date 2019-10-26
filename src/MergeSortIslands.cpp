@@ -1,21 +1,21 @@
 #include "MergeSortIslands.hpp"
 
-void MergeSortIslands::sort(Island islands[], uint32_t size) {
+void MergeSortIslands::sort(Island islands[], const uint32_t size) {
     mergeSort(islands, 0, size - 1);
 }
 
-void MergeSortIslands::mergeSort(Island islands[], uint32_t left, uint32_t right) {
+void MergeSortIslands::mergeSort(Island islands[], const uint32_t left, const uint32_t right) {
     if (left < right) {
-        uint32_t middle = left + (right - left) / 2;
+        const uint32_t middle = left + (right - left) / 2;
         mergeSort(islands, left, middle);
         mergeSort(islands, middle + 1, right);
         merge(islands, left, middle, right);
     }
 }
 
-void MergeSortIslands::merge(Island islands[], uint32_t left, uint32_t middle, uint32_t right) {
-    uint32_t leftSize = middle - left + 1;
-    uint32_t rightSize = right - middle;
+void MergeSortIslands::merge(Island islands[], const uint32_t left, const uint32_t middle, const uint32_t right) {
+    const uint32_t leftSize = middle - left + 1;
+    const uint32_t rightSize = right - middle;
 
     Island tempLeft[leftSize];
     Island tempRight[rightSize];
@@ -29,6 +29,8 @@ void MergeSortIslands::merge(Island islands[], uint32_t left, uint32_t middle, u
     uint32_t j = 0;
     uint32_t addedElements = left;
     while (i < leftSize && j < rightSize) {
+
+        // Atributo comparado para ordenação: custo por ponto.
         if (tempLeft[i].getCostPerPoint() < tempRight[j].getCostPerPoint()) {
             islands[addedElements++] = tempLeft[i++];
         } else {
